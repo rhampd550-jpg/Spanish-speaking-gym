@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spanish Speaking Gym</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <div class="brand">
+          <div class="brand-mark">SG</div>
+          <div>
+            <h1>Spanish Speaking Gym</h1>
+            <p>30 minutes of practical speaking.</p>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="dashboard">Today</button>
+          <button class="nav-item" data-view="phrases">Phrases</button>
+          <button class="nav-item" data-view="drills">Drills</button>
+          <button class="nav-item" data-view="roleplays">Roleplays</button>
+          <button class="nav-item" data-view="weak">Weak Phrases</button>
+          <button class="nav-item" data-view="progress">Progress</button>
+          <button class="nav-item" data-view="settings">Settings</button>
+        </nav>
+      </aside>
+
+      <main>
+        <section class="view active" id="dashboard">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Today's session</p>
+              <h2 id="dayTypeTitle">Speaking day</h2>
+            </div>
+            <div class="streak-pill">
+              <span id="streakCount">0</span>
+              <small>day streak</small>
+            </div>
+          </div>
+
+          <div class="session-grid" id="sessionGrid"></div>
+
+          <section class="focus-panel" id="focusPanel">
+            <div>
+              <p class="eyebrow">Start here</p>
+              <h3 id="focusPhraseSpanish">No entiendo.</h3>
+              <p id="focusPhraseEnglish">I don't understand.</p>
+              <div class="meta-row">
+                <span class="tag" id="focusStatus">Not practiced yet</span>
+                <span class="tag" id="todayRepCount">0 spoken reps today</span>
+              </div>
+              <p class="listen-result" id="focusListenResult">Use Listen to me to check what the browser hears.</p>
+            </div>
+            <div class="button-row">
+              <button class="icon-button" id="playFocus" aria-label="Play phrase">▶</button>
+              <button class="secondary-button" id="listenFocus" type="button">Listen to me</button>
+              <button class="secondary-button" id="recordFocus" type="button">Record myself</button>
+              <button class="primary-button" id="markPractice">I practiced out loud</button>
+            </div>
+            <audio class="playback" id="focusPlayback" controls></audio>
+          </section>
+        </section>
+
+        <section class="view" id="phrases">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Chunk bank</p>
+              <h2>Useful phrases</h2>
+            </div>
+            <select id="categoryFilter" aria-label="Filter phrases by category"></select>
+          </div>
+          <div class="card-list" id="phraseList"></div>
+        </section>
+
+        <section class="view" id="drills">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Substitution drills</p>
+              <h2>Say the frame. Swap the word.</h2>
+            </div>
+          </div>
+          <div class="trainer-card">
+            <p class="eyebrow" id="drillFrameLabel">Frame</p>
+            <h3 id="drillSpanish">Quiero café.</h3>
+            <p id="drillEnglish">I want coffee.</p>
+            <p class="listen-result" id="drillListenResult">Listen mode can fill this in from your voice when supported.</p>
+            <textarea id="drillResponse" placeholder="Optional: type what you said or what you wanted to say."></textarea>
+            <div class="button-row">
+              <button class="icon-button" id="playDrill" aria-label="Play drill">▶</button>
+              <button class="secondary-button" id="listenDrill" type="button">Listen to me</button>
+              <button class="secondary-button" id="recordDrill" type="button">Record myself</button>
+              <button class="secondary-button" id="drillHard">Hard</button>
+              <button class="primary-button" id="drillEasy">Easy</button>
+            </div>
+            <audio class="playback" id="drillPlayback" controls></audio>
+          </div>
+        </section>
+
+        <section class="view" id="roleplays">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Roleplay cards</p>
+              <h2>Practice tiny real scenes</h2>
+            </div>
+          </div>
+          <div class="roleplay-grid" id="roleplayList"></div>
+        </section>
+
+        <section class="view" id="weak">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Weak phrase log</p>
+              <h2>Phrases to bring back tomorrow</h2>
+            </div>
+          </div>
+          <form class="entry-form" id="weakForm">
+            <input id="weakEnglish" placeholder="English idea, e.g. I need water" required />
+            <input id="weakSpanish" placeholder="Spanish target, e.g. Necesito agua" required />
+            <select id="weakCategory" required></select>
+            <button class="primary-button" type="submit">Add phrase</button>
+          </form>
+          <div class="card-list" id="weakList"></div>
+        </section>
+
+        <section class="view" id="progress">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Progress</p>
+              <h2>Speaking milestones</h2>
+            </div>
+          </div>
+          <div class="milestone-grid" id="milestoneList"></div>
+
+          <section class="weekly-panel">
+            <div>
+              <p class="eyebrow">Sunday benchmark</p>
+              <h3 id="weeklyPrompt">Introduce yourself for 30 seconds.</h3>
+            </div>
+            <div class="rating-grid">
+              <label>Speed <input type="range" min="1" max="5" value="3" data-rating="speed" /></label>
+              <label>Pronunciation <input type="range" min="1" max="5" value="3" data-rating="pronunciation" /></label>
+              <label>Confidence <input type="range" min="1" max="5" value="3" data-rating="confidence" /></label>
+              <label>Pauses <input type="range" min="1" max="5" value="3" data-rating="pauses" /></label>
+            </div>
+            <button class="primary-button" id="saveBenchmark">Save benchmark</button>
+          </section>
+        </section>
+
+        <section class="view" id="settings">
+          <div class="page-header">
+            <div>
+              <p class="eyebrow">Settings</p>
+              <h2>Voice and local data</h2>
+            </div>
+          </div>
+          <section class="settings-panel">
+            <label class="toggle-row">
+              <span>Browser Spanish voice</span>
+              <input id="ttsToggle" type="checkbox" checked />
+            </label>
+            <label>
+              Voice
+              <select id="voiceSelect"></select>
+            </label>
+            <label>
+              Speaking speed
+              <input id="voiceRate" type="range" min="0.65" max="1" value="0.82" step="0.01" />
+            </label>
+            <label>
+              Voice warmth
+              <input id="voicePitch" type="range" min="0.8" max="1.15" value="0.96" step="0.01" />
+            </label>
+            <button class="secondary-button" id="testVoice" type="button">Test voice</button>
+            <div class="status-box" id="micStatus">
+              Checking listening support...
+            </div>
+            <label class="toggle-row">
+              <span>Optional AI voice tutor adapter</span>
+              <input type="checkbox" disabled />
+            </label>
+            <p class="muted">The MVP works for free with browser voice features and local storage. Paid voice APIs can be added later behind a server-side feature flag.</p>
+            <button class="danger-button" id="resetData">Reset local progress</button>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
