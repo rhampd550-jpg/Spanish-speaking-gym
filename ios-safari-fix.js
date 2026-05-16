@@ -1,28 +1,43 @@
 (function () {
   function isIosSafari() {
-    var ua = navigator.userAgent || "";
-    var isIos = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    var isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+    const ua = navigator.userAgent;
+    const isIos = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
     return isIos && isSafari;
   }
 
   if (!isIosSafari()) return;
 
-  var message = "iPhone Safari can record your audio, but it does not reliably provide speech-to-text for Listen to me. Use Record myself for playback.";
+  const message = "iPhone Safari can record your audio, but it does not reliably turn speech into words here. Use Record myself to hear your pronunciation.";
 
-  window.listeningSupport = function () {
-    if (typeof window.micAccessSupport === "function") {
-      var micSupport = window.micAccessSupport();
-      if (!micSupport.ok) return micSupport;
-    }
-    return { ok: false, reason: message };
-  };
+  function showMessage() {
+    document.querySelectorAll("#focusListenResult, #drillListenResult, .listen-result").forEach((node) => {
+      node.textContent = message;
+    });
 
-  window.addEventListener("load", function () {
-    var status = document.querySelector("#micStatus");
-    if (status) {
-      status.textContent = "Microphone recording is available if permission is allowed. " + message;
-      status.className = "status-box good";
+    const micStatus = document.querySelector("#micStatus");
+    if (micStatus) {
+      micStatus.textContent = message;
+      micStatus.className = "status-box warn";
     }
-  });
+  }
+
+  function disableListenButtons() {
+    document.querySelectorAll("#listenFocus, #listenDrill, [data-listen-phrase], [data-roleplay-listen]").forEach((button) => {
+      button.disabled = true;
+      button.setAttribute("aria-disabled", "true");
+      button.title = message;
+      button.textContent = "Use Record myself";
+    });
+  }
+
+  function applyFix() {
+    showMessage();
+    disableListenButtons();
+  }
+
+  document.addEventListener("DOMContentLoaded", applyFix);
+  document.addEventListener("click", () => window.setTimeout(applyFix, 0), true);
+  window.addEventListener("hashchange", applyFix);
+  window.setInterval(applyFix, 1000);
 })();
